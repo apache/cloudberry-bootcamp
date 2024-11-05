@@ -1,14 +1,12 @@
+# Apache Cloudberry (Incubating) Bootcamp
+
 ![CloudberryDB Logo](./images/cloudberrydb_logo.png)
 
 [![Slack](https://img.shields.io/badge/Join_Slack-6a32c9)](https://communityinviter.com/apps/cloudberrydb/welcome)
 [![Twitter Follow](https://img.shields.io/twitter/follow/cloudberrydb)](https://twitter.com/cloudberrydb)
-[![Website](https://img.shields.io/badge/Visit%20Website-eebc46)](https://cloudberrydb.org)
+[![Website](https://img.shields.io/badge/Visit%20Website-eebc46)](https://cloudberry.apache.org)
 
----
-
-# Cloudberry Database Bootcamp
-
-These tutorials showcase how Cloudberry Database can address day-to-day tasks performed in typical DW, BI and data science environments. It is designed to be used with the Cloudberry Database Sandbox, which is based on the Docker with the CentOS 7.9 and Rocky Linux 9.4 OS.
+These tutorials showcase how Apache Cloudberry can address day-to-day tasks performed in typical DW, BI and data science environments. It is designed to be used with the Apache Cloudberry Sandbox, which is based on the Docker with the Rocky Linux 9.4 OS.
 
 ![CloudberryDB Sandbox](./images/cbdb-sandbox.png)
 
@@ -35,7 +33,7 @@ Thanks to all the contributors:
   <img src="https://contrib.rocks/image?repo=cloudberrydb/bootcamp" />
 </a>
 
-We welcome your contributions to the Cloudberry Database Bootcamp. Please see our [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
+We welcome your contributions to the Apache Cloudberry (Incubating) Bootcamp. Please see our [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
 
 ## License
 
