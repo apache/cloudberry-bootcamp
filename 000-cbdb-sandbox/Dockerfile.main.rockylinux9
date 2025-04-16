@@ -1,7 +1,9 @@
 FROM rockylinux/rockylinux:9
 
-ARG TIMEZONE_VAR="Asia/Shanghai"
+# Argument for configuring the timezone
+ARG TIMEZONE_VAR="America/Los_Angeles"
 
+# Environment variables
 ENV container=docker
 ENV MULTINODE=false
 
@@ -21,8 +23,7 @@ RUN [ -d /lib/systemd/system/sysinit.target.wants ] && find /lib/systemd/system/
 
 COPY ./configs/* /tmp/
 
-RUN     echo root:cbdb@123 | chpasswd && \
-        dnf makecache && \
+RUN     dnf makecache && \
         dnf install -y yum-utils \
                        epel-release \
                        git && \
@@ -64,7 +65,10 @@ RUN     echo root:cbdb@123 | chpasswd && \
                        libcurl-devel \
                        libevent-devel \
                        libxml2-devel \
+                       libuuid-devel \
                        libzstd-devel \
+                       lz4 \
+                       lz4-devel \
                        openldap-devel \
                        openssl-devel \
                        pam-devel \
@@ -77,6 +81,7 @@ RUN     echo root:cbdb@123 | chpasswd && \
         dnf install -y --enablerepo=crb \
                        libuv-devel \
                        libyaml-devel \
+                       protobuf-devel \
                        perl-IPC-Run && \
         dnf install -y --enablerepo=epel \
                        xerces-c-devel
@@ -105,21 +110,24 @@ RUN     cp /tmp/90-cbdb-sysctl.conf /etc/sysctl.conf && \
         echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
 RUN     cd /tmp/ && \
-        git clone --branch main --single-branch --depth=1 https://github.com/cloudberrydb/cloudberrydb.git
+        git clone --recurse-submodules --branch main --single-branch --depth=1 https://github.com/apache/cloudberry.git
 
-RUN     cd /tmp/cloudberrydb && \
+RUN     cd /tmp/cloudberry && \
         ./configure --prefix=/usr/local/cloudberry-db \
                     --enable-cassert                  \
                     --enable-debug-extensions         \
+                    --enable-gpcloud                  \
                     --enable-ic-proxy                 \
                     --enable-mapreduce                \
                     --enable-orafce                   \
                     --enable-orca                     \
+                    --enable-pax                      \
                     --enable-pxf                      \
                     --enable-tap-tests                \
                     --with-gssapi                     \
                     --with-ldap                       \
                     --with-libxml                     \
+                    --with-lz4                        \
                     --with-openssl                    \
                     --with-pam                        \
                     --with-perl                       \
@@ -127,11 +135,11 @@ RUN     cd /tmp/cloudberrydb && \
                     --with-python                     \
                     --with-pythonsrc-ext
 
-RUN     cd /tmp/cloudberrydb && \
+RUN     cd /tmp/cloudberry && \
         make -j$(nproc) && \
         make install
 
-RUN     cd /tmp/cloudberrydb/contrib && \
+RUN     cd /tmp/cloudberry/contrib && \
         make -j$(nproc) && \
         make install
 
