@@ -47,9 +47,6 @@ github:
     rebase: true
   protected_branches:
     main:
-      required_status_checks:
-        # strict means "Require branches to be up to date before merging".
-        strict: true
       required_pull_request_reviews:
         dismiss_stale_reviews: false 
         required_approving_review_count: 1
@@ -60,11 +57,13 @@ github:
 
       # requires all conversations to be resolved before merging is possible
       required_conversation_resolution: true
-  del_branch_on_merge: true
   dependabot_alerts: true
   dependabot_updates: false
   protected_tags:
     - "v*.*.*"
+  pull_requests:
+    # auto-delete head branches after being merged
+    del_branch_on_merge: true
 notifications:
   commits: commits@cloudberry.apache.org
   issues: commits@cloudberry.apache.org
