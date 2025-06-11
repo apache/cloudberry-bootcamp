@@ -88,7 +88,7 @@ RUN     dnf makecache && \
 RUN     cp /tmp/90-cbdb-sysctl.conf /etc/sysctl.conf && \
         cp /tmp/90-cbdb-limits.conf /etc/security/limits.d/90-cbdb-limits.conf && \
         cat /usr/share/zoneinfo/${TIMEZONE_VAR} > /etc/localtime && \
-        echo "mdw" > /tmp/gpdb-hosts && \
+        echo "cdw" > /tmp/gpdb-hosts && \
         echo "/usr/local/lib" >> /etc/ld.so.conf && \
         echo "/usr/local/lib64" >> /etc/ld.so.conf && \
         ldconfig && \
@@ -101,9 +101,9 @@ RUN     cp /tmp/90-cbdb-sysctl.conf /etc/sysctl.conf && \
         echo "cbdb@123"|passwd --stdin gpadmin && \
         echo "gpadmin        ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
         echo "root           ALL=(ALL)       NOPASSWD: ALL" >> /etc/sudoers && \
-        echo "export COORDINATOR_DATA_DIRECTORY=/data0/database/master/gpseg-1" >> /home/gpadmin/.bashrc && \
+        echo "export COORDINATOR_DATA_DIRECTORY=/data0/database/coordinator/gpseg-1" >> /home/gpadmin/.bashrc && \
         echo "source /usr/local/cloudberry-db/greenplum_path.sh"                >> /home/gpadmin/.bashrc && \
-        mkdir -p /data0/database/master /data0/database/primary /data0/database/mirror && \
+        mkdir -p /data0/database/coordinator /data0/database/primary /data0/database/mirror && \
         chown -R gpadmin:gpadmin /data0 && \
         ssh-keygen -A && \
         echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
@@ -147,7 +147,7 @@ RUN     cd /tmp/cloudberry/contrib && \
 # ----------------------------------------------------------------------
 # The default user is set to 'gpadmin', and the container starts by
 # running the init_system.sh script. This container serves as a base
-# environment, and the Cloudberry Database RPM can be installed for
+# environment, and the Apache Cloudberry RPM can be installed for
 # testing and functional verification.
 # ----------------------------------------------------------------------
 USER gpadmin
