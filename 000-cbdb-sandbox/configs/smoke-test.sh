@@ -55,8 +55,8 @@ lesson1(){
         exit 1
     fi
 
-    echo "local gpadmin lily md5" >> /data0/database/master/gpseg-1/pg_hba.conf
-    echo "local gpadmin lucy trust" >> /data0/database/master/gpseg-1/pg_hba.conf
+    echo "local gpadmin lily md5" >> /data0/database/coordinator/gpseg-1/pg_hba.conf
+    echo "local gpadmin lucy trust" >> /data0/database/coordinator/gpseg-1/pg_hba.conf
 
     gpstop -u
 
@@ -86,7 +86,7 @@ lesson2(){
         exit 1
     fi
 
-    echo "local $TUTORIALDB lily md5" >> /data0/database/master/gpseg-1/pg_hba.conf
+    echo "local $TUTORIALDB lily md5" >> /data0/database/coordinator/gpseg-1/pg_hba.conf
 
     gpstop -u
 
@@ -190,7 +190,7 @@ lesson5(){
     psql -d $TUTORIALDB -c "EXPLAIN ANALYZE SELECT COUNT(*) FROM faa.sample WHERE id > 100"
 
     gpconfig -s optimizer
-    gpconfig -c optimizer -v off --masteronly
+    gpconfig -c optimizer -v off --coordinatoronly
     gpstop -u
 
     psql -d $TUTORIALDB -c "DROP TABLE IF EXISTS faa.otp_c"

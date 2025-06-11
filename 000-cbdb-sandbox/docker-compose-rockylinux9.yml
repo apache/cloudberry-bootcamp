@@ -1,10 +1,10 @@
 services:
   cbdb-coordinator:
-    container_name: cbdb-mdw
+    container_name: cbdb-cdw
     image: cbdb-${CODEBASE_VERSION}:${OS_VERSION}
     ports:
     - "15432:5432"
-    hostname: mdw
+    hostname: cdw
     tty: true
     networks:
       interconnect:
@@ -12,9 +12,9 @@ services:
     environment:
       MULTINODE: "true"
   cbdb-standby-coordinator:
-    container_name: cbdb-smdw
+    container_name: cbdb-scdw
     image: cbdb-${CODEBASE_VERSION}:${OS_VERSION}
-    hostname: smdw
+    hostname: scdw
     tty: true
     networks:
       interconnect:

@@ -3,7 +3,7 @@ set -eu
 
 # Default values
 DEFAULT_OS_VERSION="rockylinux9"
-DEFAULT_TIMEZONE_VAR="Asia/Shanghai"
+DEFAULT_TIMEZONE_VAR="America/Los_Angeles"
 DEFAULT_PIP_INDEX_URL_VAR="https://pypi.org/simple"
 BUILD_ONLY="false"
 MULTINODE="false"
@@ -20,10 +20,10 @@ PIP_INDEX_URL_VAR="${PIP_INDEX_URL_VAR:-$DEFAULT_PIP_INDEX_URL_VAR}"
 function usage() {
     echo "Usage: $0 [-o <os_version>] [-c <codebase_version>] [-b] [-m]"
     echo "  -c  Codebase version (valid values: main, or determined from release zip file name)"
-    echo "  -t  Timezone (default: Asia/Shanghai, or set via TIMEZONE_VAR environment variable)"
+    echo "  -t  Timezone (default: America/Los_Angeles, or set via TIMEZONE_VAR environment variable)"
     echo "  -p  Python Package Index (PyPI) (default: https://pypi.org/simple, or set via PIP_INDEX_URL_VAR environment variable)"
     echo "  -b  Build only, do not run the container (default: false, or set via BUILD_ONLY environment variable)"
-    echo "  -m  Multinode, this creates a multinode (multi-container) Cloudberry cluster using docker compose (requires compose to be installed)" 
+    echo "  -m  Multinode, this creates a multinode (multi-container) Cloudberry cluster using docker compose (requires compose to be installed)"
     exit 1
 }
 
@@ -129,11 +129,11 @@ if [ "${MULTINODE}" == "true" ]; then
 else
     docker run --interactive \
            --tty \
-           --name cbdb-mdw \
+           --name cbdb-cdw \
            --detach \
            --volume /sys/fs/cgroup:/sys/fs/cgroup:ro \
            --publish 122:22 \
            --publish 15432:5432 \
-           --hostname mdw \
+           --hostname cdw \
            cbdb-${CODEBASE_VERSION}:${OS_VERSION}
 fi

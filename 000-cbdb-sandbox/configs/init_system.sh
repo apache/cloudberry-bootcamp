@@ -51,35 +51,35 @@ cat /home/gpadmin/.ssh/id_rsa.pub >> /home/gpadmin/.ssh/authorized_keys
 chmod 600 /home/gpadmin/.ssh/authorized_keys
 
 # Add the container's hostname to the known_hosts file to avoid SSH warnings
-ssh-keyscan -t rsa mdw > /home/gpadmin/.ssh/known_hosts 2>/dev/null
+ssh-keyscan -t rsa cdw > /home/gpadmin/.ssh/known_hosts 2>/dev/null
 
 # Source Cloudberry environment variables and set
 # COORDINATOR_DATA_DIRECTORY
 source /usr/local/cloudberry-db/greenplum_path.sh
-export COORDINATOR_DATA_DIRECTORY=/data0/database/master/gpseg-1
+export COORDINATOR_DATA_DIRECTORY=/data0/database/coordinator/gpseg-1
 
 # Initialize single node Cloudberry cluster
-if [[ $MULTINODE == "false" && $HOSTNAME == "mdw" ]]; then
+if [[ $MULTINODE == "false" && $HOSTNAME == "cdw" ]]; then
     gpinitsystem -a \
                  -c /tmp/gpinitsystem_singlenode \
                  -h /tmp/gpdb-hosts \
                  --max_connections=100
 # Initialize multi node Cloudberry cluster
-elif [[ $MULTINODE == "true" && $HOSTNAME == "mdw" ]]; then
+elif [[ $MULTINODE == "true" && $HOSTNAME == "cdw" ]]; then
     sshpass -p "cbdb@123" ssh-copy-id -o StrictHostKeyChecking=no sdw1
     sshpass -p "cbdb@123" ssh-copy-id -o StrictHostKeyChecking=no sdw2
-    sshpass -p "cbdb@123" ssh-copy-id -o StrictHostKeyChecking=no smdw
+    sshpass -p "cbdb@123" ssh-copy-id -o StrictHostKeyChecking=no scdw
     gpinitsystem -a \
                  -c /tmp/gpinitsystem_multinode \
                  -h /tmp/multinode-gpinit-hosts \
                  --max_connections=100
-    gpinitstandby -s smdw -a
+    gpinitstandby -s scdw -a
     printf "sdw1\nsdw2\n" >> /tmp/gpdb-hosts
 fi
 
-if [ $HOSTNAME == "mdw" ]; then
+if [ $HOSTNAME == "cdw" ]; then
      ## Allow any host access the Cloudberry Cluster
-     echo 'host all all 0.0.0.0/0 trust' >> /data0/database/master/gpseg-1/pg_hba.conf
+     echo 'host all all 0.0.0.0/0 trust' >> /data0/database/coordinator/gpseg-1/pg_hba.conf
      gpstop -u
 
      psql -d template1 \
@@ -88,19 +88,19 @@ if [ $HOSTNAME == "mdw" ]; then
      cat <<-'EOF'
 
 ======================================================================
-  ____ _                 _ _                            ____  ____
- / ___| | ___  _   _  __| | |__   ___ _ __ _ __ _   _  |  _ \| __ )
-| |   | |/ _ \| | | |/ _` | '_ \ / _ \ '__| '__| | | | | | | |  _ \
-| |___| | (_) | |_| | (_| | |_) |  __/ |  | |  | |_| | | |_| | |_) |
- \____|_|\___/ \__,_|\__,_|_.__/ \___|_|  |_|   \__, | |____/|____/
-                                                |___/
+	  ____ _                 _ _                          
+	 / ___| | ___  _   _  __| | |__   ___ _ __ _ __ _   _  
+	| |   | |/ _ \| | | |/ _` | '_ \ / _ \ '__| '__| | | |
+	| |___| | (_) | |_| | (_| | |_) |  __/ |  | |  | |_| |
+	 \____|_|\___/ \__,_|\__,_|_.__/ \___|_|  |_|   \__, |
+	                                                |___/
 ======================================================================
 EOF
 
      cat <<-'EOF'
 
 ======================================================================
-Sandbox: Cloudberry Database Cluster details
+Sandbox: Apache Cloudberry Cluster details
 ======================================================================
 
 EOF
